@@ -45,8 +45,6 @@ export class Insect {
     this.currentHex = hex;
     this.currentHex.occupants.push(this);
 
-    console.log(this.kind);
-
     const turn: PlaceInsectTurn = {
       insectType: this.kind,
       toHexCoord: this.currentHex.coord,
@@ -133,6 +131,8 @@ export class Spider extends Insect {
       .getNeighbours()
       .filter((hex) => hex.hasOccupiedNeighbour() && hex.isEmpty());
 
+    console.log(firstDegreeNeighbours);
+
     const secondDegreeNeighbours = firstDegreeNeighbours
       .map((hex) =>
         hex
@@ -158,15 +158,6 @@ export class Spider extends Insect {
     const thirdMinusSecondMinusFirst = setDifference(
       thirdMinusSecond,
       new Set(firstDegreeNeighbours)
-    );
-
-    console.log(
-      "neigh",
-      firstDegreeNeighbours,
-      secondDegreeNeighbours,
-      thirdDegreeNeighbours,
-      thirdMinusSecond,
-      thirdMinusSecondMinusFirst
     );
 
     return Array.from(thirdMinusSecondMinusFirst);

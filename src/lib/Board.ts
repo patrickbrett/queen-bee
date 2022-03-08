@@ -200,6 +200,8 @@ export class Board {
         };
       })
     );
+
+    console.log(this.hexes, this.rows, this.cols);
   }
 
   onUpdate: (handler: () => void) => void = (handler) =>
@@ -249,7 +251,7 @@ export class Board {
   getPlaceableLocations: () => Hex[] = () => {
     const allHexes = this.hexes.reduce((acc, curr) => acc.concat(curr), []);
 
-    if (this.isEmpty()) return allHexes;
+    if (this.isEmpty()) return allHexes.filter(hex => !hex.isEdge());
 
     return allHexes.filter(
       (hex) => hex.isEmpty() && hex.hasOccupiedNeighbour()

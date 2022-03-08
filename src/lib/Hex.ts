@@ -40,37 +40,41 @@ export class Hex {
     const coords: Coord[] = [];
     const isEvenRow = this.coord.row % 2 === 0;
 
-    if (this.coord.row > 0) {
-      coords.push({
-        row: this.coord.row - 1,
-        col: isEvenRow ? this.coord.col - 1 : this.coord.col,
-      });
-      coords.push({
-        row: this.coord.row - 1,
-        col: isEvenRow ? this.coord.col : this.coord.col + 1,
-      });
-    }
+    coords.push({
+      row: this.coord.row - 1,
+      col: isEvenRow ? this.coord.col - 1 : this.coord.col,
+    });
+    coords.push({
+      row: this.coord.row - 1,
+      col: isEvenRow ? this.coord.col : this.coord.col + 1,
+    });
 
     coords.push({ row: this.coord.row, col: this.coord.col - 1 });
     coords.push({ row: this.coord.row, col: this.coord.col + 1 });
 
-    if (this.coord.row < this.board.rows - 1) {
-      coords.push({
-        row: this.coord.row + 1,
-        col: isEvenRow ? this.coord.col - 1 : this.coord.col,
-      });
-      coords.push({
-        row: this.coord.row + 1,
-        col: isEvenRow ? this.coord.col : this.coord.col + 1,
-      });
-    }
+    coords.push({
+      row: this.coord.row + 1,
+      col: isEvenRow ? this.coord.col - 1 : this.coord.col,
+    });
+    coords.push({
+      row: this.coord.row + 1,
+      col: isEvenRow ? this.coord.col : this.coord.col + 1,
+    });
 
-    return coords.map(this.board.getHex);
+    return coords
+      .filter(
+        (coord) =>
+          coord.row >= 0 &&
+          coord.row < this.board.rows &&
+          coord.col >= 0 &&
+          coord.col < this.board.cols
+      )
+      .map(this.board.getHex);
   };
 
-  searchEmptyInDirection: (
-    direction: Direction
-  ) => Hex | null = (direction) => {
+  searchEmptyInDirection: (direction: Direction) => Hex | null = (
+    direction
+  ) => {
     const isEvenRow = this.coord.row % 2 === 0;
 
     if (this.isEmpty()) return this;
@@ -125,9 +129,19 @@ export class Hex {
   };
 
   hasOccupiedNeighbour: (exclude?: Hex) => boolean = (exclude) => {
-    console.log(this.getNeighbours());
-    return this.getNeighbours().some((hex) => hex && !hex.isEmpty() && (exclude !== hex));
+    return this.getNeighbours().some(
+      (hex) => hex && !hex.isEmpty() && exclude !== hex
+    );
   };
+
+  isEdge() {
+    return (
+      this.coord.row === 0 ||
+      this.coord.row === this.board.rows - 1 ||
+      this.coord.col === 0 ||
+      this.coord.col === this.board.cols - 1
+    );
+  }
 
   getColour() {
     if (this.occupants.length === 0) {
@@ -142,10 +156,13 @@ export class Hex {
   runDfs(fullSet: Set<Hex>, currentSet: Set<Hex>): boolean {
     currentSet.add(this);
 
-    const occupiedNeighbours = this.getNeighbours().filter(hex => hex && !hex.isEmpty() && !currentSet.has(hex));
+    const occupiedNeighbours = this.getNeighbours().filter(
+      (hex) => hex && !hex.isEmpty() && !currentSet.has(hex)
+    );
 
-    if (occupiedNeighbours.length === 0) return fullSet.size === currentSet.size;
+    if (occupiedNeighbours.length === 0)
+      return fullSet.size === currentSet.size;
 
-    return occupiedNeighbours.some(hex => hex.runDfs(fullSet, currentSet));
+    return occupiedNeighbours.some((hex) => hex.runDfs(fullSet, currentSet));
   }
 }
