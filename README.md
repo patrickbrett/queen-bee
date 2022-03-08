@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# Queen Bee
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Gameplay Screenshot](assets/screenshot-v1-0-0.png)
 
-## Available Scripts
+A clone of the board game Hive, a hexagonal tile-based insect-themed strategy game.
 
-In the project directory, you can run:
+## About the game
 
-### `yarn start`
+The game takes place on an infinite hexagonal board. Players place insects, each with different movement restrictions:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+* The queen bee can move one space per turn.
+* Spiders can move exactly three spaces per turn.
+* Beetles can move one space per turn, but can climb on other insects.
+* Grasshoppers can jump in a straight line over other insects to a free space on the other side.
+* Ants can move unlimited spaces as long as they are connected to the hive.
+* All insects must keep the hive intact during and after their turn.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## About the project
 
-### `yarn test`
+Given the complex movement mechanics, I thought it would be fun to essentially build a "valid move" calculator for this game.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Movement Calculator](assets/move-calc-v1-0-0.png)
 
-### `yarn build`
+For example, the image above shows valid moves that can be made by the black grasshopper on the far right.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The move calculator takes into account the movement restrictions of the insect in question, as well as whether a move will break the hive (making it non legal - essentially we check for graph connectivity!).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+It turns out that once you've made a legal move calculator for a game, you've basically made the game, so I fleshed this out into a fully playable local 2 player game, and then added basic online connectivity as well (host + join a game, you'll need to host a server yourself).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Running it locally
 
-### `yarn eject`
+Clone the repo, then:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`yarn start`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+in the main folder, then:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`cd server && yarn start`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+in the server folder.
 
-## Learn More
+## Known issues
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* The valid-move calculator is not perfect - some ant moves are considered illegal when they're legal and vice versa (mostly around )
+* In the online version, you can actually make moves as either player. The game works if you wait for the opponent to move instead of moving for them though ;)
+* Currently only works on localhost because of CORS stuff, will fix this soon
+* Currently doesn't check for the win condition
+* Currently doesn't check for the condition that you can only place insects
+* Currently doesn't check for the condition that you must place the queen bee within the first four turns
+* Codebase is a bit ravioli (seen worse but definitely not too shiny)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+More on the game rules here: https://en.wikipedia.org/wiki/Hive_(game)

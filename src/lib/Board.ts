@@ -69,7 +69,7 @@ export class Board {
 
   handlePlayerTurn(turn: Turn): void {
     console.log("sending turn", turn);
-    
+
     this.onlineClient.sendTurn(turn);
 
     this.handleUpdate();
@@ -83,7 +83,9 @@ export class Board {
       if (!insect) return;
       insect.move(this.getHex(turn.toHexCoord), true);
     } else if (turn.turnType === TurnType.PLACE_INSECT) {
-      const hand = this.hands[this.currentTurn].find(hand => hand.kind.kind === turn.insectType);
+      const hand = this.hands[this.currentTurn].find(
+        (hand) => hand.kind.kind === turn.insectType
+      );
       if (!hand) return;
       hand.count--;
 
@@ -106,42 +108,98 @@ export class Board {
       this.currentTurn === Team.WHITE ? Team.BLACK : Team.WHITE;
 
     this.expandBoardIfNecessary();
-    
+    this.shrinkBoardIfNecessary();
+
     this.handleUpdate();
   };
 
   expandBoardIfNecessary: () => void = () => {
-    // Check top
-    if (this.hexes[0].some(hex => !hex.isEmpty())) {
-      this.hexes.unshift(new Array(this.cols).fill(null).map((_, col) => new Hex({ row: 0, col }, this)));
-      this.rows++;
-    }
-
-    // Check bottom
-    if (this.hexes[this.rows - 1].some(hex => !hex.isEmpty())) {
-      this.hexes.push(new Array(this.cols).fill(null).map((_, col) => new Hex({ row: this.rows, col }, this)));
-      this.rows++;
-    }
-
     // Check left
-    if (this.hexes.some(row => !row[0].isEmpty())) {
-      this.hexes.forEach((row, i) => row.unshift(new Hex({ row: i, col: 0 }, this)));
+    if (this.hexes.some((row) => !row[0].isEmpty())) {
+      this.hexes.forEach((row, i) =>
+        row.unshift(new Hex({ row: i, col: 0 }, this))
+      );
       this.cols++;
     }
 
     // Check right
-    if (this.hexes.some(row => !row[this.cols - 1].isEmpty())) {
-      this.hexes.forEach((row, i) => row.push(new Hex({ row: i, col: this.cols }, this)));
+    if (this.hexes.some((row) => !row[this.cols - 1].isEmpty())) {
+      this.hexes.forEach((row, i) =>
+        row.push(new Hex({ row: i, col: this.cols }, this))
+      );
       this.cols++;
     }
 
+    // Check bottom
+    if (this.hexes[this.rows - 1].some((hex) => !hex.isEmpty())) {
+      this.hexes.push(
+        new Array(this.cols)
+          .fill(null)
+          .map((_, col) => new Hex({ row: this.rows, col }, this))
+      );
+      this.rows++;
+    }
+
+    // Check top
+    if (this.hexes[0].some((hex) => !hex.isEmpty())) {
+      // Move the even rows one to the left, then add a top row, then expand if necessary
+      const evens = this.hexes.filter((hex, i) => i % 2 === 0);
+      evens.forEach((row) => {
+        row.shift();
+        row.push(new Hex({ row: 0, col: this.cols }, this));
+      });
+
+      this.hexes.unshift(
+        new Array(this.cols)
+          .fill(null)
+          .map((_, col) => new Hex({ row: 0, col }, this))
+      );
+      this.rows++;
+
+      this.expandBoardIfNecessary();
+    }
+
+    this.updateHexIndices();
+  };
+
+  shrinkBoardIfNecessary: () => void = () => {
+    // Check top
+    if (this.hexes[1].every(hex => hex.isEmpty())) {
+      this.hexes.shift();
+      this.rows--;
+    }
+
+    // Check bottom
+    if (this.hexes[this.rows - 2].every(hex => hex.isEmpty())) {
+      this.hexes.pop();
+      this.rows--;
+    }
+
+    // Check left
+    if (this.hexes.every(row => row[1].isEmpty())) {
+      this.hexes.forEach(row => row.shift());
+      this.cols--;
+    }
+
+    // Check right
+    if (this.hexes.every(row => row[this.cols - 2].isEmpty())) {
+      this.hexes.forEach(row => row.pop());
+      this.cols--;
+    }
+
+    this.updateHexIndices();
+  }
+
+  updateHexIndices: () => void = () => {
     // Update indexes
-    this.hexes.forEach((row, i) => row.forEach((hex, j) => {
-      hex.coord = {
-        row: i,
-        col: j,
-      };
-    }))
+    this.hexes.forEach((row, i) =>
+      row.forEach((hex, j) => {
+        hex.coord = {
+          row: i,
+          col: j,
+        };
+      })
+    );
   }
 
   onUpdate: (handler: () => void) => void = (handler) =>
@@ -193,11 +251,13 @@ export class Board {
 
     if (this.isEmpty()) return allHexes;
 
-    return allHexes.filter(hex => hex.isEmpty() && hex.hasOccupiedNeighbour());
-  }
+    return allHexes.filter(
+      (hex) => hex.isEmpty() && hex.hasOccupiedNeighbour()
+    );
+  };
 
   isEmpty: () => boolean = () => {
     const allHexes = this.hexes.reduce((acc, curr) => acc.concat(curr), []);
-    return allHexes.every(hex => hex.isEmpty());
-  }
+    return allHexes.every((hex) => hex.isEmpty());
+  };
 }

@@ -9,7 +9,7 @@ import { OnlineClient } from "./lib/OnlineClient";
 
 const client = new OnlineClient();
 
-const board = new Board(client, 10, 10);
+const board = new Board(client, 3, 3);
 
 const hostGame = async () => {
   console.log("starting")
