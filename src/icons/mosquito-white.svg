@@ -1,0 +1,13 @@
+<svg width="60" height="60" viewBox="0 0 223 223" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="111.5" cy="111.5" r="111.5" fill="white"/>
+<path d="M142.408 50L131.986 55.0302V65.092L116.726 71.3803" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path d="M123.053 99.4681V136.359L142.408 173.251" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path d="M131.986 107.433V128.814L149.108 148.517" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path d="M80.6204 50L91.0424 55.0302V65.092L106.303 71.3803" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M111.513 89.4048C118.958 89.4048 118.958 148.094 111.513 148.094C103.697 148.094 103.697 89.4048 111.513 89.4048V89.4048Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M111.513 72.2191C120.074 72.2191 120.074 86.8917 111.513 86.8917C102.953 86.8917 102.953 72.2191 111.513 72.2191V72.2191Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M160.272 88.1475C180.743 98.628 167.344 116.654 157.667 111.624L112.629 88.1475H160.272Z" fill="black"/>
+<path d="M99.6033 99.4681V136.359L80.6204 173.251" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path d="M91.0423 107.433V128.814L73.9204 148.517" stroke="black" stroke-width="4.3237" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M62.3818 88.1475C42.6547 98.628 55.3101 116.654 65.3594 111.624L110.397 88.1475H62.3818Z" fill="black"/>
+</svg>

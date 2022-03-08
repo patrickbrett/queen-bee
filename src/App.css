@@ -1,0 +1,89 @@
+.App {
+  /* text-align: center; */
+}
+
+.hex-board {
+  margin-bottom: 20px;
+}
+
+.hex-row {
+  margin-bottom: -20px;
+}
+
+.hex-container {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.hex {
+  display: inline-block;
+}
+
+.hex.active {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+}
+
+.hex.possible {
+  filter: brightness(70%);
+}
+
+.hex.possible:hover {
+  filter: brightness(50%);
+}
+
+.hexagon.offset {
+  transform: translateX(45px);
+}
+
+.hexagon {
+  position: relative;
+  width: 80px; 
+  height: 46.19px;
+  background-color: var(--bgcolor);
+  margin: 23.09px 0;
+}
+
+.hexagon:before,
+.hexagon:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+}
+
+.hexagon:before {
+  bottom: 100%;
+  border-bottom: 23.09px solid var(--bgcolor);
+}
+
+.hexagon:after {
+  top: 100%;
+  width: 0;
+  border-top: 23.09px solid var(--bgcolor);
+  left: 0;
+}
+
+.hand {
+  /* background: #aaa; */
+  margin-left: 80px;
+  margin-top: 80px;
+}
+
+.hand-item {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+.piece-count {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.active-alt {
+  transition: 0.3s all;
+  transform: scale(1.4);
+  opacity: 0.7;
+}
