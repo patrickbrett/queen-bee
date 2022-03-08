@@ -41,11 +41,11 @@ in the server folder.
 
 ## Known issues
 
-* The valid-move calculator is not perfect - some ant moves are considered illegal when they're legal and vice versa (mostly around )
+* The valid-move calculator is not perfect - some ant moves are considered illegal when they're legal and vice versa (mostly around when ants can/can't enter mostly-blocked-off sections)
 * In the online version, you can actually make moves as either player. The game works if you wait for the opponent to move instead of moving for them though ;)
 * Currently only works on localhost because of CORS stuff, will fix this soon
 * Currently doesn't check for the win condition
-* Currently doesn't check for the condition that you can only place insects
+* Currently doesn't check for the condition that you can only place insects if they're not touching any enemy insects
 * Currently doesn't check for the condition that you must place the queen bee within the first four turns
 * Codebase is a bit ravioli (seen worse but definitely not too shiny)
 
